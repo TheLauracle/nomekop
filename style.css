@@ -1,0 +1,42 @@
+* {
+	font-family: georgia;
+	text-transform: lowercase;
+}
+
+body {
+	text-align: center;
+}
+
+.ad {
+	z-index: 2;
+}
+
+#sidead {
+	position: absolute;
+	margin: 0px 0px 0px 0px;
+	padding: 0px;
+	width: 100px;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	border-right: 3px groove red;
+}
+
+#sideadcontent {
+	height: 100px;
+	padding: 0px;
+
+	border: 1px dashed black;
+
+	font-size: 5em;
+	color: #ee00ee;
+
+    -ms-transform: rotate(90deg); /* IE 9 */
+    -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+    transform: rotate(90deg);
+}
+
+#body {
+	background-color: #dfdfdf;
+
+}
