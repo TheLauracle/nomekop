@@ -4,14 +4,31 @@
 	<title>Nomekop</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script src="script.js"></script>
+	<script src="http://code.jquery.com/jquery-1.12.2.js"></script>
 </head>
 <body>
 	<nav><!--nav bar will go here--></nav>
-	<div class="ad" id="sidead">
-		<!-- <div id="sideadcontent">Buy cats now!</div> -->
-	</div>
-	<div id="body">
 
-	</div>
+				<script>
+					setTimeout(function(){location.reload();}, 5000);
+    			</script>
+
+	<table>
+		<tr>
+			<td>
+			<!--	<div class="ad" id="sidead">	</div> -->
+			</td>
+			<td>
+				<!-- refresh the page periodically to update local edits -->
+			
+				<canvas id="thegame"></canvas>
+    			<script src="game.js"></script>
+
+			</td>
+			<td>
+			<!--	<div class="ad" id="sidead">	</div> -->
+			</td>
+		</tr>
+	</table>
 </body>
 </html>
