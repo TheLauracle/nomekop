@@ -5,6 +5,8 @@ var context = document.getElementById("thegame").getContext('2d');
 context.canvas.width = 700;
 context.canvas.height = 600;
 
+//what to draw and how to treat events; ideas being menu, intro, overworld
+var userMode = 'menu';
 
 
 //** -------------- ------------- -------------- **
@@ -12,17 +14,27 @@ context.canvas.height = 600;
 //** -------------- ------------- -------------- **
 
 //function to draw the background
-function drawbackground(){
-	var bwgradient = context.createLinearGradient(0,0,context.canvas.width, context.canvas.height);
-	bwgradient.addColorStop(0, "red");
-	bwgradient.addColorStop(1, "white");
-	context.fillStyle = bwgradient;
-	context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+function drawBackground(){
+	switch(userMode) {
+		case 'menu':
+			var menugradient = context.createLinearGradient(0,0,context.canvas.width, context.canvas.height);
+			menugradient.addColorStop(0, "red");
+			menugradient.addColorStop(1, "white");
+			context.fillStyle = menugradient;
+			context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+			break;
+		case 'intro':
+			context.fillStyle = "#000";
+			context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+		default:
+			break;
+	}
 }
 
 //TBA - add menu buttons
-function drawmenubuttons(){
-
+function drawMenuButtons(){
+	if(userMode != 'menu')
+		return;
 	//"play game" button
 	context.fillStyle = "#0000ff";
 	context.fillRect(285, 300, 130, 40);
@@ -34,8 +46,9 @@ function drawmenubuttons(){
 
 //updates the canvas with its (newly moved) shapes
 function redraw(){
-	drawbackground();
-	drawmenubuttons();
+	drawBackground();
+	if(userMode == 'menu') drawMenuButtons();
+
 }
 
 redraw();
@@ -47,10 +60,40 @@ setInterval(redraw, 100);
 //** -------------- ------------ -------------- **
 
 //handle when the user clicks on the canvas
-context.canvas.addEventListener("click", theyclicked, false);
-function theyclicked(ev){
+context.canvas.addEventListener("click", theyClicked, false);
+
+//decide how to handle click
+function theyClicked(ev){
 	console.log("clickity!");
 	var mouseX = ev.clientX;
 	var mouseY = ev.clientY;
-	alert("You clicked (" + mouseX + ", " + mouseY + ").");
+
+	switch(userMode) {
+
+		case 'menu':
+			if(!menuClick(ev, mouseX, mouseY))
+				alert("You clicked (" + mouseX + ", " + mouseY + ").");
+			break;
+
+		case 'intro':
+			alert("You are in intro mode!");
+			break;
+
+		default:
+
+			break;
+	}
+}
+
+function menuClick(ev) {
+	if((ev.clientX > 285) && (ev.clientY > 300) && (ev.clientX < 415) && (ev.clientY < 345))
+	{
+		//user clicked the 'play game' button
+		alert("You clicked the play game button!");
+		userMode = 'intro';
+		return true;
+	} else {
+		//user clicked the background
+		return false;
+	}
 }
