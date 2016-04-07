@@ -23,6 +23,9 @@ function drawBackground(){
 			context.fillStyle = menugradient;
 			context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 			break;
+		case 'intro':
+			context.fillStyle = "#000";
+			context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 		default:
 			break;
 	}
@@ -45,6 +48,7 @@ function drawMenuButtons(){
 function redraw(){
 	drawBackground();
 	if(userMode == 'menu') drawMenuButtons();
+
 }
 
 redraw();
@@ -65,10 +69,16 @@ function theyClicked(ev){
 	var mouseY = ev.clientY;
 
 	switch(userMode) {
+
 		case 'menu':
 			if(!menuClick(ev, mouseX, mouseY))
 				alert("You clicked (" + mouseX + ", " + mouseY + ").");
 			break;
+
+		case 'intro':
+			alert("You are in intro mode!");
+			break;
+
 		default:
 
 			break;
@@ -76,12 +86,14 @@ function theyClicked(ev){
 }
 
 function menuClick(ev) {
-	if((ev.clientX > 285) && (ev.clientY > 300) && (ev.clientX < 415) && (ev.clientY < 340))
+	if((ev.clientX > 285) && (ev.clientY > 300) && (ev.clientX < 415) && (ev.clientY < 345))
 	{
-		//'play game' has been clicked
+		//user clicked the 'play game' button
 		alert("You clicked the play game button!");
+		userMode = 'intro';
 		return true;
 	} else {
+		//user clicked the background
 		return false;
 	}
 }
