@@ -24,7 +24,7 @@ function drawBackground(){
 			context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 			break;
 		case 'intro':
-			context.fillStyle = "#000";
+			context.fillStyle = "#c0ffee";
 			context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 		default:
 			break;
@@ -46,6 +46,7 @@ function drawMenuButtons(){
 
 //updates the canvas with its (newly moved) shapes
 function redraw(){
+	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 	drawBackground();
 	if(userMode == 'menu') drawMenuButtons();
 
@@ -65,8 +66,11 @@ context.canvas.addEventListener("click", theyClicked, false);
 //decide how to handle click
 function theyClicked(ev){
 	console.log("clickity!");
-	var mouseX = ev.clientX;
-	var mouseY = ev.clientY;
+
+	//convert mouse coordinates to be relative to the canvas
+	var rekt = context.canvas.getBoundingClientRect();
+	var mouseX = ev.clientX - rekt.left;
+	var mouseY = ev.clientY - rekt.top;
 
 	switch(userMode) {
 
@@ -76,7 +80,8 @@ function theyClicked(ev){
 			break;
 
 		case 'intro':
-			alert("You are in intro mode!");
+			if(window.confirm("Go back to menu?"))
+				userMode = 'menu';
 			break;
 
 		default:
@@ -85,8 +90,9 @@ function theyClicked(ev){
 	}
 }
 
-function menuClick(ev) {
-	if((ev.clientX > 285) && (ev.clientY > 300) && (ev.clientX < 415) && (ev.clientY < 345))
+//user left-clicked while in menu mode
+function menuClick(ev, mouseX, mouseY) {
+	if((mouseX > 285) && (mouseY > 300) && (mouseX < 415) && (mouseY < 340))
 	{
 		//user clicked the 'play game' button
 		alert("You clicked the play game button!");
