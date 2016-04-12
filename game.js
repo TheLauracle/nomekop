@@ -8,10 +8,46 @@ context.canvas.height = 600;
 //what to draw and how to treat events; ideas being menu, intro, overworld
 var userMode = 'menu';
 
+//** -------------- -------------- -------------- **
+//** -------------- BUTTONS CLASS? -------------- **
+//** -------------- -------------- -------------- **
+
+class Button{
+	constructor(x, y, width, height, name){
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.name = name;
+		console.log("initialized " + this.name);
+	}
+
+	wasClicked(mouseX, mouseY){
+		if((mouseX >= this.x) && (mouseX <= (this.x + this.width)) && (mouseY >= this.y) && (mouseY <= (this.y + this.height)))
+			return true;
+		else
+			return false;
+	}
+
+	drawMe(){
+		context.fillStyle = "#0000ff";
+		context.fillRect(this.x, this.y, this.width, this.height);
+		context.font = "20px Arial";
+		context.fillStyle = "#ffffff";
+		context.textAlign = "center";
+		context.textBaseline = "middle";
+		context.fillText(this.name,this.x + (this.width / 2), this.y + (this.height / 2));
+	}
+}
 
 //** -------------- ------------- -------------- **
 //** -------------- DRAWING STUFF -------------- **
 //** -------------- ------------- -------------- **
+
+//** INITIALIZE STUFF TO DRAW ** 
+var titleImage = new Image();
+titleImage.src = "nomekop.png";
+var playGameButton = new Button(285, 300, 130, 40, "play game");
 
 //function to draw the background
 function drawBackground(){
@@ -22,9 +58,11 @@ function drawBackground(){
 			menugradient.addColorStop(1, "white");
 			context.fillStyle = menugradient;
 			context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+
+			context.drawImage(titleImage, 125, 20);
 			break;
 		case 'intro':
-			context.fillStyle = "#000";
+			context.fillStyle = "#c0ffee";
 			context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 		default:
 			break;
@@ -35,17 +73,14 @@ function drawBackground(){
 function drawMenuButtons(){
 	if(userMode != 'menu')
 		return;
-	//"play game" button
-	context.fillStyle = "#0000ff";
-	context.fillRect(285, 300, 130, 40);
-	context.font = "20px Arial";
-	context.fillStyle = "#ffffff";
-	context.fillText("play game",305,325);
+
+	playGameButton.drawMe();
 
 }
 
 //updates the canvas with its (newly moved) shapes
 function redraw(){
+	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 	drawBackground();
 	if(userMode == 'menu') drawMenuButtons();
 
@@ -65,8 +100,11 @@ context.canvas.addEventListener("click", theyClicked, false);
 //decide how to handle click
 function theyClicked(ev){
 	console.log("clickity!");
-	var mouseX = ev.clientX;
-	var mouseY = ev.clientY;
+
+	//convert mouse coordinates to be relative to the canvas
+	var rekt = context.canvas.getBoundingClientRect();
+	var mouseX = ev.clientX - rekt.left;
+	var mouseY = ev.clientY - rekt.top;
 
 	switch(userMode) {
 
@@ -76,7 +114,8 @@ function theyClicked(ev){
 			break;
 
 		case 'intro':
-			alert("You are in intro mode!");
+			if(window.confirm("Go back to menu?"))
+				userMode = 'menu';
 			break;
 
 		default:
@@ -85,8 +124,9 @@ function theyClicked(ev){
 	}
 }
 
-function menuClick(ev) {
-	if((ev.clientX > 285) && (ev.clientY > 300) && (ev.clientX < 415) && (ev.clientY < 345))
+//user left-clicked while in menu mode
+function menuClick(ev, mouseX, mouseY) {
+	if(playGameButton.wasClicked(mouseX, mouseY))
 	{
 		//user clicked the 'play game' button
 		alert("You clicked the play game button!");
