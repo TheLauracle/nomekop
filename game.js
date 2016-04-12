@@ -22,8 +22,8 @@ class Button{
 		console.log("initialized " + this.name);
 	}
 
-	wasClicked(event){
-		if((event.clientX >= x) && (event.clientX <= (x + width)) && (event.clientY >= y) && (event.clientY <= (y + height)))
+	wasClicked(mouseX, mouseY){
+		if((mouseX >= this.x) && (mouseX <= (this.x + this.width)) && (mouseY >= this.y) && (mouseY <= (this.y + this.height)))
 			return true;
 		else
 			return false;
@@ -126,7 +126,7 @@ function theyClicked(ev){
 
 //user left-clicked while in menu mode
 function menuClick(ev, mouseX, mouseY) {
-	if((mouseX > 285) && (mouseY > 300) && (mouseX < 415) && (mouseY < 340))
+	if(playGameButton.wasClicked(mouseX, mouseY))
 	{
 		//user clicked the 'play game' button
 		alert("You clicked the play game button!");
