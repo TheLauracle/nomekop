@@ -8,8 +8,6 @@ context.canvas.height = 600;
 //what to draw and how to treat events; ideas being menu, intro, overworld
 var userMode = 'menu';
 
-
-
 //** -------------- ------------- -------------- **
 //** -------------- DRAWING STUFF -------------- **
 //** -------------- ------------- -------------- **
@@ -40,7 +38,6 @@ function drawBackground(){
 	}
 }
 
-//TBA - add menu buttons
 function drawMenuButtons(){
 	if(userMode != 'menu')
 		return;
@@ -80,8 +77,8 @@ function theyClicked(ev){
 	switch(userMode) {
 
 		case 'menu':
-			if(!menuClick(ev, mouseX, mouseY))
-				alert("You clicked (" + mouseX + ", " + mouseY + ").");
+			menuClick(ev, mouseX, mouseY);
+				//alert("You clicked (" + mouseX + ", " + mouseY + ").");
 			break;
 
 		case 'intro':
@@ -99,13 +96,12 @@ function theyClicked(ev){
 function menuClick(ev, mouseX, mouseY) {
 	if(playGameButton.wasClicked(mouseX, mouseY))
 	{
-		alert("You clicked the play game button!");
 		userMode = 'intro';
 		return true;
 	} 
 	else if(optionsButton.wasClicked(mouseX, mouseY)) 
 	{
-		alert("You clicked the options button!");
+		//UNFINISHED: add options screen
 		return true;
 	} 
 	else 
