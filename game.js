@@ -46,7 +46,7 @@ class Button{
 
 //** INITIALIZE STUFF TO DRAW ** 
 var titleImage = new Image();
-titleImage.src = "nomekop.png";
+titleImage.src = "img/nomekop.png";
 var playGameButton = new Button(285, 300, 130, 40, "play game");
 
 //function to draw the background
