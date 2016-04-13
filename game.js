@@ -48,6 +48,7 @@ class Button{
 var titleImage = new Image();
 titleImage.src = "img/nomekop.png";
 var playGameButton = new Button(285, 300, 130, 40, "play game");
+var optionsButton = new Button(285, 350, 130, 40, "options");
 
 //function to draw the background
 function drawBackground(){
@@ -75,7 +76,7 @@ function drawMenuButtons(){
 		return;
 
 	playGameButton.drawMe();
-
+	optionsButton.drawMe();
 }
 
 //updates the canvas with its (newly moved) shapes
@@ -128,11 +129,17 @@ function theyClicked(ev){
 function menuClick(ev, mouseX, mouseY) {
 	if(playGameButton.wasClicked(mouseX, mouseY))
 	{
-		//user clicked the 'play game' button
 		alert("You clicked the play game button!");
 		userMode = 'intro';
 		return true;
-	} else {
+	} 
+	else if(optionsButton.wasClicked(mouseX, mouseY)) 
+	{
+		alert("You clicked the options button!");
+		return true;
+	} 
+	else 
+	{
 		//user clicked the background
 		return false;
 	}
