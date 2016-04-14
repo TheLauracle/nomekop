@@ -8,6 +8,8 @@ context.canvas.height = 600;
 //what to draw and how to treat events; ideas being menu, intro, overworld
 var userMode = 'menu';
 
+var entities = [];
+
 //** -------------- ------------- -------------- **
 //** -------------- DRAWING STUFF -------------- **
 //** -------------- ------------- -------------- **
@@ -17,6 +19,10 @@ var titleImage = new Image();
 titleImage.src = "img/nomekop.png";
 var playGameButton = new Button(285, 300, 130, 40, "play game");
 var optionsButton = new Button(285, 350, 130, 40, "options");
+
+//initialize player
+var thePlayer = new Player("Leafmander");
+entities[0] = thePlayer;
 
 //function to draw the background
 function drawBackground(){
@@ -46,12 +52,17 @@ function drawMenuButtons(){
 	optionsButton.drawMe();
 }
 
+function drawEntities(){
+	for(i = 0; i < entities.length; i++)
+		entities[i].drawMe();
+}
+
 //updates the canvas with its (newly moved) shapes
 function redraw(){
 	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 	drawBackground();
 	if(userMode == 'menu') drawMenuButtons();
-
+	if(userMode == 'intro') drawEntities();
 }
 
 redraw();

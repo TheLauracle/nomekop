@@ -29,3 +29,33 @@ class Button{
 		context.fillText(this.name,this.x + (this.width / 2), this.y + (this.height / 2));
 	}
 }
+
+//** -------------- --------------- -------------- **
+//** -------------- CHARACTER CLASS -------------- **
+//** -------------- --------------- -------------- **
+class Character {
+	constructor(name, level){
+		this.name = name;
+		this.level = level;
+
+		this.maxhealth = level * 5;
+		this.currenthealth = this.maxhealth;
+
+		this.icon = new Image();
+		this.icon.src = "img/catbg1.png";
+	}
+
+	drawMe(){
+		context.drawImage(this.icon, 125, 20);
+	}
+}
+
+//** -------------- ------------ -------------- **
+//** -------------- PLAYER CLASS -------------- **
+//** -------------- ------------ -------------- **
+class Player extends Character {
+	constructor(name){
+		super(name, 1);
+		this.icon.src = "img/standright.gif";
+	}
+}
