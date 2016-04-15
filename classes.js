@@ -38,16 +38,26 @@ class Character {
 		this.name = name;
 		this.level = level;
 
+		//stats
 		this.maxhealth = level * 5;
 		this.currenthealth = this.maxhealth;
 
+		//info for drawing
+		this.isMoving = false;
+		this.x = 0;
+		this.y = 0;
+
+		//info for animation
 		this.icon = new Image();
 		this.icon.src = "img/catbg1.png";
 	}
 
 	drawMe(){
-		context.drawImage(this.icon, 125, 20);
+		context.drawImage(this.icon, x, y);
 	}
+
+	getMaxHealth(){ return this.maxhealth; }
+	getCurrentHealth(){	return this.currenthealth; }
 }
 
 //** -------------- ------------ -------------- **
@@ -57,5 +67,48 @@ class Player extends Character {
 	constructor(name){
 		super(name, 1);
 		this.icon.src = "img/standright.gif";
+		this.rspritesheet = new Image();
+		this.rspritesheet.src = "img/walkrightspritesheet.png";
+		this.lspritesheet = new Image();
+		this.lspritesheet.src = "img/walkleftspritesheet.png";
+
+		this.activeimage = this.icon;
+		this.maxframes = 1;
+		this.currentframe = 1;
+		this.framesize = {
+			x : 40,
+			y : 40
+		};
+		this.sx = 0;
+
+	}
+
+	drawMe(){
+		//center the image
+		var posX = (context.canvas.width - this.icon.width) / 2;
+		var posY = (context.canvas.height - this.icon.height) / 2;
+
+		context.drawImage(this.activeimage, this.sx, 0, this.framesize.x, this.framesize.y, posX, posY, this.framesize.x, this.framesize.y);
+
+		//INCOMPLETE: for animation
+		if(this.currentframe >= this.maxframes) 
+		{
+			this.currentframe = 1;
+		}
+		else
+		{
+			this.currentframe++;
+		}
+
+		this.sx = (this.currentframe - 1) * this.framesize.x;
+	}
+
+	move(){
+		//later: add canMove() and 'if' it here
+		//later: determine which direction movement is in
+
+		//move right
+		this.activeimage = this.rspritesheet;
+		this.maxframes = 2;
 	}
 }

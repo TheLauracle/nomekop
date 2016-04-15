@@ -21,8 +21,8 @@ var playGameButton = new Button(285, 300, 130, 40, "play game");
 var optionsButton = new Button(285, 350, 130, 40, "options");
 
 //initialize player
-var thePlayer = new Player("Leafmander");
-entities[0] = thePlayer;
+var player = new Player("Leafmander");
+entities[0] = player;
 
 //function to draw the background
 function drawBackground(){
@@ -89,12 +89,10 @@ function theyClicked(ev){
 
 		case 'menu':
 			menuClick(ev, mouseX, mouseY);
-				//alert("You clicked (" + mouseX + ", " + mouseY + ").");
 			break;
 
 		case 'intro':
-			if(window.confirm("Go back to menu?"))
-				userMode = 'menu';
+			introClick(ev, mouseX, mouseY);
 			break;
 
 		default:
@@ -120,4 +118,8 @@ function menuClick(ev, mouseX, mouseY) {
 		//user clicked the background
 		return false;
 	}
+}
+
+function introClick(ev, mouseX, mouseY){
+	player.move();
 }
