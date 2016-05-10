@@ -90,7 +90,7 @@ class Player extends Character {
 
 		context.drawImage(this.activeimage, this.sx, 0, this.framesize.x, this.framesize.y, posX, posY, this.framesize.x, this.framesize.y);
 
-		//INCOMPLETE: for animation
+		//if on a spritesheet, change frames every method call
 		if(this.currentframe >= this.maxframes) 
 		{
 			this.currentframe = 1;
