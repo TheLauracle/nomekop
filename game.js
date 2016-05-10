@@ -8,37 +8,7 @@ context.canvas.height = 600;
 //what to draw and how to treat events; ideas being menu, intro, overworld
 var userMode = 'menu';
 
-//** -------------- -------------- -------------- **
-//** -------------- BUTTONS CLASS? -------------- **
-//** -------------- -------------- -------------- **
-
-class Button{
-	constructor(x, y, width, height, name){
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.name = name;
-		console.log("initialized " + this.name);
-	}
-
-	wasClicked(mouseX, mouseY){
-		if((mouseX >= this.x) && (mouseX <= (this.x + this.width)) && (mouseY >= this.y) && (mouseY <= (this.y + this.height)))
-			return true;
-		else
-			return false;
-	}
-
-	drawMe(){
-		context.fillStyle = "#0000ff";
-		context.fillRect(this.x, this.y, this.width, this.height);
-		context.font = "20px Arial";
-		context.fillStyle = "#ffffff";
-		context.textAlign = "center";
-		context.textBaseline = "middle";
-		context.fillText(this.name,this.x + (this.width / 2), this.y + (this.height / 2));
-	}
-}
+var entities = [];
 
 //** -------------- ------------- -------------- **
 //** -------------- DRAWING STUFF -------------- **
@@ -46,8 +16,13 @@ class Button{
 
 //** INITIALIZE STUFF TO DRAW ** 
 var titleImage = new Image();
-titleImage.src = "nomekop.png";
+titleImage.src = "img/nomekop.png";
 var playGameButton = new Button(285, 300, 130, 40, "play game");
+var optionsButton = new Button(285, 350, 130, 40, "options");
+
+//initialize player
+var thePlayer = new Player("Leafmander");
+entities[0] = thePlayer;
 
 //function to draw the background
 function drawBackground(){
@@ -69,13 +44,17 @@ function drawBackground(){
 	}
 }
 
-//TBA - add menu buttons
 function drawMenuButtons(){
 	if(userMode != 'menu')
 		return;
 
 	playGameButton.drawMe();
+	optionsButton.drawMe();
+}
 
+function drawEntities(){
+	for(i = 0; i < entities.length; i++)
+		entities[i].drawMe();
 }
 
 //updates the canvas with its (newly moved) shapes
@@ -83,7 +62,7 @@ function redraw(){
 	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 	drawBackground();
 	if(userMode == 'menu') drawMenuButtons();
-
+	if(userMode == 'intro') drawEntities();
 }
 
 redraw();
@@ -109,8 +88,8 @@ function theyClicked(ev){
 	switch(userMode) {
 
 		case 'menu':
-			if(!menuClick(ev, mouseX, mouseY))
-				alert("You clicked (" + mouseX + ", " + mouseY + ").");
+			menuClick(ev, mouseX, mouseY);
+				//alert("You clicked (" + mouseX + ", " + mouseY + ").");
 			break;
 
 		case 'intro':
@@ -128,11 +107,16 @@ function theyClicked(ev){
 function menuClick(ev, mouseX, mouseY) {
 	if(playGameButton.wasClicked(mouseX, mouseY))
 	{
-		//user clicked the 'play game' button
-		alert("You clicked the play game button!");
 		userMode = 'intro';
 		return true;
-	} else {
+	} 
+	else if(optionsButton.wasClicked(mouseX, mouseY)) 
+	{
+		//UNFINISHED: add options screen
+		return true;
+	} 
+	else 
+	{
 		//user clicked the background
 		return false;
 	}
