@@ -21,12 +21,12 @@ class Button{
 
 	drawMe(){
 		context.fillStyle = "#0000ff";
-		context.fillRect(this.x, this.y, this.width, this.height);
+		context.fillRect(this.x - (this.width / 2), this.y, this.width, this.height);
 		context.font = "20px Arial";
 		context.fillStyle = "#ffffff";
 		context.textAlign = "center";
 		context.textBaseline = "middle";
-		context.fillText(this.name,this.x + (this.width / 2), this.y + (this.height / 2));
+		context.fillText(this.name,this.x, this.y + (this.height / 2));
 	}
 }
 

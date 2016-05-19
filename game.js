@@ -17,8 +17,10 @@ var entities = [];
 //** INITIALIZE STUFF TO DRAW ** 
 var titleImage = new Image();
 titleImage.src = "img/nomekop.png";
-var playGameButton = new Button(285, 300, 130, 40, "play game");
-var optionsButton = new Button(285, 350, 130, 40, "options");
+var playGameButton = new Button(context.canvas.width / 2, 300, 130, 40, "play game");
+var optionsButton = new Button(context.canvas.width / 2, 350, 130, 40, "options");
+var optionsdescription = new Button(context.canvas.width / 2, 40, 230, 40, "There are no options.");
+var menuButton = new Button(context.canvas.width / 2, context.canvas.height / 2, 140, 40, "back to menu");
 
 //initialize player
 var player = new Player("Leafmander");
@@ -39,6 +41,14 @@ function drawBackground(){
 		case 'intro':
 			context.fillStyle = "#c0ffee";
 			context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+			break;
+		case 'options':
+			var optionsgradient = context.createLinearGradient(0,0,context.canvas.width, context.canvas.height);
+			optionsgradient.addColorStop(0,"red");
+			optionsgradient.addColorStop(1,"#daddee");
+			context.fillStyle = optionsgradient;
+			context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+			break;
 		default:
 			break;
 	}
@@ -52,6 +62,18 @@ function drawMenuButtons(){
 	optionsButton.drawMe();
 }
 
+function drawOptions(){
+	optionsdescription.drawMe();
+	drawOptionsButtons();
+}
+
+function drawOptionsButtons(){
+	if(userMode != 'options')
+		return;
+
+	menuButton.drawMe();
+}
+
 function drawEntities(){
 	for(i = 0; i < entities.length; i++)
 		entities[i].drawMe();
@@ -62,9 +84,12 @@ function redraw(){
 	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 	drawBackground();
 	if(userMode == 'menu') drawMenuButtons();
-	if(userMode == 'intro') drawEntities();
+	if(userMode == 'options') drawOptions();
+	if(userMode == 'intro'){
+		floorMapRender(context);
+		drawEntities();
+	}
 }
-
 redraw();
 setInterval(redraw, 100);
 
@@ -78,7 +103,7 @@ context.canvas.addEventListener("click", theyClicked, false);
 
 //decide how to handle click
 function theyClicked(ev){
-	console.log("clickity!");
+	console.log("user clicked the canvas");
 
 	//convert mouse coordinates to be relative to the canvas
 	var rekt = context.canvas.getBoundingClientRect();
@@ -93,6 +118,10 @@ function theyClicked(ev){
 
 		case 'intro':
 			introClick(ev, mouseX, mouseY);
+			break;
+
+		case 'options':
+			optionsClick(ev, mouseX, mouseY);
 			break;
 
 		default:
@@ -110,7 +139,7 @@ function menuClick(ev, mouseX, mouseY) {
 	} 
 	else if(optionsButton.wasClicked(mouseX, mouseY)) 
 	{
-		//UNFINISHED: add options screen
+		userMode = 'options';
 		return true;
 	} 
 	else 
@@ -122,4 +151,11 @@ function menuClick(ev, mouseX, mouseY) {
 
 function introClick(ev, mouseX, mouseY){
 	player.move();
+}
+
+function optionsClick(ev, mouseX, mouseY){
+	if(menuButton.wasClicked(mouseX, mouseY))
+	{
+		userMode = 'menu';
+	}
 }
