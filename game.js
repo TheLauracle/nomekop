@@ -100,6 +100,7 @@ setInterval(redraw, 100);
 
 //handle when the user clicks on the canvas
 context.canvas.addEventListener("click", theyClicked, false);
+context.canvas.addEventListener("keydown", theyPressed, false);
 
 //decide how to handle click
 function theyClicked(ev){
@@ -150,12 +151,40 @@ function menuClick(ev, mouseX, mouseY) {
 }
 
 function introClick(ev, mouseX, mouseY){
-	player.move();
+	//player.move("click");
+	alert("Please use the keyboard to move! :)");
 }
 
 function optionsClick(ev, mouseX, mouseY){
 	if(menuButton.wasClicked(mouseX, mouseY))
 	{
 		userMode = 'menu';
+	}
+}
+
+//handle when user presses keyboard
+function theyPressed(ev){
+	console.log("user pressed the keyboard");
+
+	if(userMode != 'intro')
+		return;
+
+	var keykey = ev.which || ev.keyCode; //compatibility for Firefox
+
+	switch(keykey){
+		case 37: //left arrow
+			player.move("left");
+			break;
+		case 38: //up arrow
+			player.move("up");
+			break;
+		case 39: //right arrow
+			player.move("right");
+			break;
+		case 40: //down arrow
+			player.move("down");
+			break;
+		default:
+			break;
 	}
 }

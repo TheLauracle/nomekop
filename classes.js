@@ -8,12 +8,13 @@ class Button{
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.xpos = this.x - (this.width / 2);
 		this.name = name;
 		console.log("initialized " + this.name);
 	}
 
 	wasClicked(mouseX, mouseY){
-		if((mouseX >= this.x) && (mouseX <= (this.x + this.width)) && (mouseY >= this.y) && (mouseY <= (this.y + this.height)))
+		if((mouseX >= this.xpos) && (mouseX <= (this.xpos + this.width)) && (mouseY >= this.y) && (mouseY <= (this.y + this.height)))
 			return true;
 		else
 			return false;
@@ -21,7 +22,7 @@ class Button{
 
 	drawMe(){
 		context.fillStyle = "#0000ff";
-		context.fillRect(this.x - (this.width / 2), this.y, this.width, this.height);
+		context.fillRect(this.xpos, this.y, this.width, this.height);
 		context.font = "20px Arial";
 		context.fillStyle = "#ffffff";
 		context.textAlign = "center";
@@ -81,14 +82,12 @@ class Player extends Character {
 		};
 		this.sx = 0;
 
+		this.posX = (context.canvas.width - this.icon.width) / 2;
+		this.posY = (context.canvas.height - this.icon.height) / 2;
 	}
 
 	drawMe(){
-		//center the image
-		var posX = (context.canvas.width - this.icon.width) / 2;
-		var posY = (context.canvas.height - this.icon.height) / 2;
-
-		context.drawImage(this.activeimage, this.sx, 0, this.framesize.x, this.framesize.y, posX, posY, this.framesize.x, this.framesize.y);
+		context.drawImage(this.activeimage, this.sx, 0, this.framesize.x, this.framesize.y, this.posX, this.posY, this.framesize.x, this.framesize.y);
 
 		//if on a spritesheet, change frames every method call
 		if(this.currentframe >= this.maxframes) 
@@ -103,12 +102,35 @@ class Player extends Character {
 		this.sx = (this.currentframe - 1) * this.framesize.x;
 	}
 
-	move(){
+	move(direction){
 		//later: add canMove() and 'if' it here
-		//later: determine which direction movement is in
-
-		//move right
-		this.activeimage = this.rspritesheet;
 		this.maxframes = 2;
+
+		switch(direction){
+			case 'left':
+				this.activeimage = this.lspritesheet;
+				this.posX = this.posX - 5;
+				this.x = this.x - 5;
+				break;
+			case 'up':
+				if(this.activeimage != this.lspritesheet && this.activeimage != this.rspritesheet)
+					this.activeimage = this.rspritesheet;
+				this.posY = this.posY - 5;
+				this.y = this.y - 5;
+				break;
+			case 'right':
+				this.activeimage = this.rspritesheet;
+				this.posX = this.posX + 5;
+				this.x = this.x + 5;
+				break;
+			case 'down':
+				if (this.activeimage != this.lspritesheet && this.activeimage != this.rspritesheet)
+					this.activeimage = this.lspritesheet;
+				this.posY = this.posY + 5;
+				this.y = this.y + 5;
+				break;
+			default:
+				break;
+		}
 	}
 }
