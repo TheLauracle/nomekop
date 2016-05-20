@@ -5,7 +5,7 @@ var context = document.getElementById("thegame").getContext('2d');
 context.canvas.width = 700;
 context.canvas.height = 600;
 
-//what to draw and how to treat events; ideas being menu, intro, overworld
+//userMode is what to draw and how to treat events
 var userMode = 'menu';
 
 var entities = [];
@@ -38,7 +38,7 @@ function drawBackground(){
 
 			context.drawImage(titleImage, 125, 20);
 			break;
-		case 'intro':
+		case 'ingame':
 			context.fillStyle = "#c0ffee";
 			context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 			break;
@@ -85,7 +85,7 @@ function redraw(){
 	drawBackground();
 	if(userMode == 'menu') drawMenuButtons();
 	if(userMode == 'options') drawOptions();
-	if(userMode == 'intro'){
+	if(userMode == 'ingame'){
 		floorMapRender(context);
 		drawEntities();
 	}
@@ -117,8 +117,8 @@ function theyClicked(ev){
 			menuClick(ev, mouseX, mouseY);
 			break;
 
-		case 'intro':
-			introClick(ev, mouseX, mouseY);
+		case 'ingame':
+			ingameClick(ev, mouseX, mouseY);
 			break;
 
 		case 'options':
@@ -135,7 +135,7 @@ function theyClicked(ev){
 function menuClick(ev, mouseX, mouseY) {
 	if(playGameButton.wasClicked(mouseX, mouseY))
 	{
-		userMode = 'intro';
+		userMode = 'ingame';
 		return true;
 	} 
 	else if(optionsButton.wasClicked(mouseX, mouseY)) 
@@ -150,7 +150,7 @@ function menuClick(ev, mouseX, mouseY) {
 	}
 }
 
-function introClick(ev, mouseX, mouseY){
+function ingameClick(ev, mouseX, mouseY){
 	//player.move("click");
 	alert("Please use the keyboard to move! :)");
 }
@@ -166,7 +166,7 @@ function optionsClick(ev, mouseX, mouseY){
 function theyPressed(ev){
 	console.log("user pressed the keyboard");
 
-	if(userMode != 'intro')
+	if(userMode != 'ingame')
 		return;
 
 	var keykey = ev.which || ev.keyCode; //compatibility for Firefox
