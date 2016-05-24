@@ -86,6 +86,8 @@ var overworldimage = new Image();
 overworldimage.src = overworld;
 
 function floorMapRender(ctx){
+	
+	ctx.imageSmoothingEnabled= false;
 
 	for (r = 0; r < activemap.length; r++) {
 		for (c = 0; c < activemap[r].length; c++) {
@@ -93,6 +95,7 @@ function floorMapRender(ctx){
 			ctx.drawImage(overworldimage, mapXscale[tilename] * tilewidth, mapYscale[tilename] * tilewidth, tilewidth, tilewidth, c * tilewidth * 2, r * tilewidth * 2, tilewidth * 2, tilewidth * 2);
 		}
 	}
+	
 
 	//INCOMPLETE: change position of map depending on where the user moves
 };
