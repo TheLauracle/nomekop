@@ -26,7 +26,6 @@ var menuButton = new Button(context.canvas.width / 2, context.canvas.height / 2,
 var player = new Player("Leafmander");
 entities[0] = player;
 
-//function to draw the background
 function drawBackground(){
 	switch(userMode) {
 		case 'menu':
@@ -39,7 +38,7 @@ function drawBackground(){
 			context.drawImage(titleImage, 125, 20);
 			break;
 		case 'ingame':
-			context.fillStyle = "#c0ffee";
+			context.fillStyle = "#000000";
 			context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 			break;
 		case 'options':

@@ -34,8 +34,8 @@ var genericamap = [
 "wgg=========ggggwwwwwg",
 "wgg=========ggwwwwwwgg",
 "wgg=========ggggwwwwwg",
-"wgg=========gggwwwwwgg",
-"wgg=========gggggggggg"
+"wgg=========gggw;wwwgg",
+"wgg=========ggg;gggggg"
 ];
 
 var activemap = genericamap;
@@ -53,7 +53,8 @@ var mapinterpret = {
 	'#008' : 'tallweeds',
 	'#009' : 'mushroom-1',
 	'#00a' : 'mushroom-2',
-	'#00b' : 'mushroom-3'
+	'#00b' : 'mushroom-3',
+	';' : 'whiteflowers'
 };
 
 //Find tile on tileset
@@ -65,7 +66,8 @@ var mapXscale = {
 	'grass-lush' : 4,
 	'grass-lush2' : 5,
 	'tallgrass' : 6,
-	'weeds' : 7
+	'weeds' : 7,
+	'whiteflowers' : 0
 };
 var mapYscale = {
 	'air' : 0,
@@ -75,7 +77,8 @@ var mapYscale = {
 	'grass-lush' : 0,
 	'grass-lush2' : 0,
 	'tallgrass' : 0,
-	'weeds' : 0
+	'weeds' : 0,
+	'whiteflowers' : 1
 }
 
 //Sample map render
