@@ -80,7 +80,10 @@ class Player extends Character {
 			x : 40,
 			y : 40
 		};
+		this.framemaxprogress = 100; //how many drawMe() calls until change frame
+		this.frameprogress = 1;
 		this.sx = 0;
+		//this.sy = 0;
 
 		this.posX = (context.canvas.width - this.icon.width) / 2;
 		this.posY = (context.canvas.height - this.icon.height) / 2;
@@ -89,21 +92,28 @@ class Player extends Character {
 	drawMe(){
 		context.drawImage(this.activeimage, this.sx, 0, this.framesize.x, this.framesize.y, this.posX, this.posY, this.framesize.x, this.framesize.y);
 
-		//if on a spritesheet, change frames every method call
-		if(this.currentframe >= this.maxframes) 
+		if(this.frameprogress >= this.framemaxprogress)
 		{
-			this.currentframe = 1;
-		}
-		else
-		{
-			this.currentframe++;
-		}
+			console.log("change frames");
+			//if on a spritesheet, change frames every time framemaxprogress is reached
+			if(this.currentframe >= this.maxframes) //determine which frame to choose
+			{
+				this.currentframe = 1;
+			}
+			else
+			{
+				this.currentframe++;
+			}
+			this.sx = (this.currentframe - 1) * this.framesize.x; //use the frame chosen above
 
-		this.sx = (this.currentframe - 1) * this.framesize.x;
+			this.frameprogress = 1;
+		}
+		this.frameprogress++;
 	}
 
 	move(direction){
 		//later: add canMove() and 'if' it here
+		//later: add this.ismoving and change it back to false only on keyup
 		this.maxframes = 2;
 
 		switch(direction){

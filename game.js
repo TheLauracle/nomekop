@@ -91,7 +91,7 @@ function redraw(){
 	}
 }
 redraw();
-setInterval(redraw, 100);
+setInterval(redraw, 3);
 
 
 //** -------------- ------------ -------------- **
