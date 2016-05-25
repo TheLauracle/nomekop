@@ -5,7 +5,7 @@ var context = document.getElementById("thegame").getContext('2d');
 context.canvas.width = 700;
 context.canvas.height = 600;
 
-//what to draw and how to treat events; ideas being menu, intro, overworld
+//userMode is what to draw and how to treat events
 var userMode = 'menu';
 
 var entities = [];
@@ -17,14 +17,15 @@ var entities = [];
 //** INITIALIZE STUFF TO DRAW ** 
 var titleImage = new Image();
 titleImage.src = "img/nomekop.png";
-var playGameButton = new Button(285, 300, 130, 40, "play game");
-var optionsButton = new Button(285, 350, 130, 40, "options");
+var playGameButton = new Button(context.canvas.width / 2, 300, 130, 40, "play game");
+var optionsButton = new Button(context.canvas.width / 2, 350, 130, 40, "options");
+var optionsdescription = new Button(context.canvas.width / 2, 40, 230, 40, "There are no options.");
+var menuButton = new Button(context.canvas.width / 2, context.canvas.height / 2, 140, 40, "back to menu");
 
 //initialize player
-var thePlayer = new Player("Leafmander");
-entities[0] = thePlayer;
+var player = new Player("Leafmander");
+entities[0] = player;
 
-//function to draw the background
 function drawBackground(){
 	switch(userMode) {
 		case 'menu':
@@ -36,9 +37,17 @@ function drawBackground(){
 
 			context.drawImage(titleImage, 125, 20);
 			break;
-		case 'intro':
-			context.fillStyle = "#c0ffee";
+		case 'ingame':
+			context.fillStyle = "#000000";
 			context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+			break;
+		case 'options':
+			var optionsgradient = context.createLinearGradient(0,0,context.canvas.width, context.canvas.height);
+			optionsgradient.addColorStop(0,"red");
+			optionsgradient.addColorStop(1,"#daddee");
+			context.fillStyle = optionsgradient;
+			context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+			break;
 		default:
 			break;
 	}
@@ -52,6 +61,18 @@ function drawMenuButtons(){
 	optionsButton.drawMe();
 }
 
+function drawOptions(){
+	optionsdescription.drawMe();
+	drawOptionsButtons();
+}
+
+function drawOptionsButtons(){
+	if(userMode != 'options')
+		return;
+
+	menuButton.drawMe();
+}
+
 function drawEntities(){
 	for(i = 0; i < entities.length; i++)
 		entities[i].drawMe();
@@ -62,11 +83,14 @@ function redraw(){
 	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 	drawBackground();
 	if(userMode == 'menu') drawMenuButtons();
-	if(userMode == 'intro') drawEntities();
+	if(userMode == 'options') drawOptions();
+	if(userMode == 'ingame'){
+		floorMapRender(context);
+		drawEntities();
+	}
 }
-
 redraw();
-setInterval(redraw, 100);
+setInterval(redraw, 3);
 
 
 //** -------------- ------------ -------------- **
@@ -75,10 +99,11 @@ setInterval(redraw, 100);
 
 //handle when the user clicks on the canvas
 context.canvas.addEventListener("click", theyClicked, false);
+context.canvas.addEventListener("keydown", theyPressed, false);
 
 //decide how to handle click
 function theyClicked(ev){
-	console.log("clickity!");
+	console.log("user clicked the canvas");
 
 	//convert mouse coordinates to be relative to the canvas
 	var rekt = context.canvas.getBoundingClientRect();
@@ -89,12 +114,14 @@ function theyClicked(ev){
 
 		case 'menu':
 			menuClick(ev, mouseX, mouseY);
-				//alert("You clicked (" + mouseX + ", " + mouseY + ").");
 			break;
 
-		case 'intro':
-			if(window.confirm("Go back to menu?"))
-				userMode = 'menu';
+		case 'ingame':
+			ingameClick(ev, mouseX, mouseY);
+			break;
+
+		case 'options':
+			optionsClick(ev, mouseX, mouseY);
 			break;
 
 		default:
@@ -107,17 +134,56 @@ function theyClicked(ev){
 function menuClick(ev, mouseX, mouseY) {
 	if(playGameButton.wasClicked(mouseX, mouseY))
 	{
-		userMode = 'intro';
+		userMode = 'ingame';
 		return true;
 	} 
 	else if(optionsButton.wasClicked(mouseX, mouseY)) 
 	{
-		//UNFINISHED: add options screen
+		userMode = 'options';
 		return true;
 	} 
 	else 
 	{
 		//user clicked the background
 		return false;
+	}
+}
+
+function ingameClick(ev, mouseX, mouseY){
+	//player.move("click");
+	alert("Please use the keyboard to move! :)");
+}
+
+function optionsClick(ev, mouseX, mouseY){
+	if(menuButton.wasClicked(mouseX, mouseY))
+	{
+		userMode = 'menu';
+	}
+}
+
+//handle when user presses keyboard
+function theyPressed(ev){
+	console.log("user pressed the keyboard");
+
+	if(userMode != 'ingame')
+		return;
+
+	var keykey = ev.which || ev.keyCode; //compatibility for Firefox
+
+	switch(keykey){
+		case 37: //left arrow
+			player.move("left");
+			break;
+		case 38: //up arrow
+			player.move("up");
+			break;
+		case 39: //right arrow
+			player.move("right");
+			break;
+		case 40: //down arrow
+			player.move("down");
+			break;
+		default:
+			break;
 	}
 }

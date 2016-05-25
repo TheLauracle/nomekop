@@ -9,27 +9,19 @@
 <body>
 	<nav><!--nav bar will go here--></nav>
 
-				<!-- refresh the page periodically to update local edits -->
-				<script>
-					setTimeout(function(){location.reload();}, 60000);
-    			</script>
+			<!-- refresh the page periodically to update local edits -->
+			<!--
+			<script>
+				setTimeout(function(){location.reload();}, 100000);
+    		</script>
+			-->
 
-	<table>
-		<tr>
-			<td>
-			<!--	<div class="ad" id="sidead">	</div> -->
-			</td>
-			<td>
 			
-				<canvas id="thegame"></canvas>
-				<script src="classes.js"></script>
-    			<script src="game.js"></script>
+			<div><canvas id="thegame" tabindex="1"></canvas></div>
+			<script src="maprender.js"></script>
+			<script src="classes.js"></script>
+    		<script src="game.js"></script>
 
-			</td>
-			<td>
-			<!--	<div class="ad" id="sidead">	</div> -->
-			</td>
-		</tr>
-	</table>
+	<br>*This game works best on recent versions of Google Chrome.
 </body>
 </html>
