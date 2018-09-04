@@ -100,6 +100,7 @@ setInterval(redraw, 3);
 //handle when the user clicks on the canvas
 context.canvas.addEventListener("click", theyClicked, false);
 context.canvas.addEventListener("keydown", theyPressed, false);
+context.canvas.addEventListener("keyup",theyReleased, false);
 
 //decide how to handle click
 function theyClicked(ev){
@@ -162,6 +163,7 @@ function optionsClick(ev, mouseX, mouseY){
 }
 
 //handle when user presses keyboard
+//TODO: replace discrete movements with "move until keyup"
 function theyPressed(ev){
 	console.log("user pressed the keyboard");
 
@@ -172,17 +174,38 @@ function theyPressed(ev){
 
 	switch(keykey){
 		case 37: //left arrow
+			player.beginMoving(0);
 			player.move("left");
 			break;
 		case 38: //up arrow
+			player.beginMoving(1);
 			player.move("up");
 			break;
 		case 39: //right arrow
+			player.beginMoving(2);
 			player.move("right");
 			break;
 		case 40: //down arrow
+			player.beginMoving(3);
 			player.move("down");
 			break;
+		default:
+			break;
+	}
+}
+function theyReleased(ev){
+	console.log("user released the key");
+	if(userMode != 'ingame') return;
+	var keykey = ev.which || ev.keyCode;
+	switch(keykey){
+		case 37: //left
+			player.stopMoving(0);
+		case 38: //up
+			player.stopMoving(1);
+		case 39: //right
+			player.stopMoving(2);
+		case 40: //down
+			player.stopMoving(3);
 		default:
 			break;
 	}

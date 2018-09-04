@@ -85,23 +85,30 @@ class Player extends Character {
 		this.sx = 0;
 		//this.sy = 0;
 
-		this.posX = (context.canvas.width - this.icon.width) / 2;
-		this.posY = (context.canvas.height - this.icon.height) / 2;
+		//movement
+		this.walkdirections = [];
+		this.speedX = 1.0;
+		this.speedY = 1.0;
+		this.posX = (context.canvas.width - this.icon.width) / 2.0;
+		this.posY = (context.canvas.height - this.icon.height) / 2.0;
 	}
 
 	drawMe(){
-		context.drawImage(this.activeimage, this.sx, 0, this.framesize.x, this.framesize.y, this.posX, this.posY, this.framesize.x, this.framesize.y);
+		//move position if necessary
+		for (var i=0; i<this.walkdirections.length; i++){
+			this.move(this.walkdirections[i]);
+		}
 
-		if(this.frameprogress >= this.framemaxprogress)
-		{
+		//put the player at position
+		context.drawImage(this.activeimage, this.sx, 0, this.framesize.x, this.framesize.y, Math.round(this.posX), Math.round(this.posY), this.framesize.x, this.framesize.y);
+
+		//change sprite frame
+		if(this.frameprogress >= this.framemaxprogress) {
 			console.log("change frames");
 			//if on a spritesheet, change frames every time framemaxprogress is reached
-			if(this.currentframe >= this.maxframes) //determine which frame to choose
-			{
+			if(this.currentframe >= this.maxframes) { //determine which frame to choose
 				this.currentframe = 1;
-			}
-			else
-			{
+			} else {
 				this.currentframe++;
 			}
 			this.sx = (this.currentframe - 1) * this.framesize.x; //use the frame chosen above
@@ -111,36 +118,83 @@ class Player extends Character {
 		this.frameprogress++;
 	}
 
+
 	move(direction){
 		//later: add canMove() and 'if' it here
-		//later: add this.ismoving and change it back to false only on keyup
-		this.maxframes = 2;
 
+		//honestly, I don't remember what the difference is between x and posX.
 		switch(direction){
-			case 'left':
+			case 0: //left
 				this.activeimage = this.lspritesheet;
-				this.posX = this.posX - 5;
-				this.x = this.x - 5;
+				this.posX = this.posX - this.speedX;
+				this.x = this.x - this.speedX;
+				if(!this.tryMove(this.posX, this.posY)) this.stopMoving(0);
 				break;
-			case 'up':
+			case 1: //up
 				if(this.activeimage != this.lspritesheet && this.activeimage != this.rspritesheet)
 					this.activeimage = this.rspritesheet;
-				this.posY = this.posY - 5;
-				this.y = this.y - 5;
+				this.posY = this.posY - this.speedY;
+				this.y = this.y - this.speedY;
+				if(!this.tryMove(this.posX, this.posY)) this.stopMoving(1);
 				break;
-			case 'right':
+			case 2: //right
 				this.activeimage = this.rspritesheet;
-				this.posX = this.posX + 5;
-				this.x = this.x + 5;
+				this.posX = this.posX + this.speedX;
+				this.x = this.x + this.speedX;
+				if(!this.tryMove(this.posX, this.posY)) this.stopMoving(2);
 				break;
-			case 'down':
+			case 3: //down
 				if (this.activeimage != this.lspritesheet && this.activeimage != this.rspritesheet)
 					this.activeimage = this.lspritesheet;
-				this.posY = this.posY + 5;
-				this.y = this.y + 5;
+				this.posY = this.posY + this.speedY;
+				this.y = this.y + this.speedY;
+				if(!this.tryMove(this.posX, this.posY)) this.stopMoving(3);
 				break;
 			default:
 				break;
 		}
+	}
+
+	//(move helper) if we can't go there, go as far as we can instead AND return false
+	tryMove(coordX, coordY){
+		var success = true;
+		
+		//x-axis
+		if(coordX < 0) {
+			this.posX = 0;
+			this.x = 0;
+			success = false;
+		} else if (coordX + this.framesize.x > context.canvas.width) {
+			this.posX = context.canvas.width - this.framesize.x;
+			this.x = this.posX;
+			success = false;
+		}
+		//y-axis
+		if(coordY < 0){
+			this.posY = 0;
+			this.y = 0;
+			success = false;
+		} else if (coordY + this.framesize.y > context.canvas.height){
+			this.posY = context.canvas.height - this.framesize.y;
+			this.y = this.posY;
+			success = false;
+		}
+
+		return success;
+	}
+
+	//begin & stop moving: add directions to walk in during the game tick.
+	//also start or stop animating depending on whether we're walking.
+	beginMoving(dirnum){
+		//convention: 0 = left; 1 = up; 2 = right; 3 = down
+		var adddir = this.walkdirections.indexOf(dirnum);
+		if (adddir < 0) this.walkdirections.push(dirnum); //add direction if not moving
+		if (this.walkdirections.length != 0) this.maxframes = 2; //start animating sprite
+	}
+	stopMoving(dirnum){
+		//convention: 0 = left; 1 = up; 2 = right; 3 = down
+		var removedir = this.walkdirections.indexOf(dirnum);
+		if (removedir > -1) this.walkdirections.splice(removedir, 1); //remove direction if moving
+		if (this.walkdirections.length == 0) this.maxframes = 1; //stop animating sprite
 	}
 }
