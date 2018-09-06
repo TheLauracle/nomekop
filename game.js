@@ -152,7 +152,8 @@ function menuClick(ev, mouseX, mouseY) {
 
 function ingameClick(ev, mouseX, mouseY){
 	//player.move("click");
-	alert("Please use the keyboard to move! :)");
+	//alert("Please use the keyboard to move! :)");
+	console.log("Why did the user click? Did I do something wrong?");
 }
 
 function optionsClick(ev, mouseX, mouseY){
