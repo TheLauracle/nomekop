@@ -17,24 +17,24 @@ function changeMap(mapname){
 //CANVAS HEIGHT: 19 TILES
 
 var genericamap = [
-"wggggggggggggggggggggg",
-"wggggggggggggggggggggg",
-"w===================gg",
+"wwwwwwwggggggggggggggg",
+"wwwwwggggggggg;;gggggg",
+"ww========wgggg=====gg",
 "wgggggwwwwwwwwwg=====g",
-"wggggggwwwwwwwwg=====g",
-"wgggwwwwwwwww========g",
-"wggwwwwwwwwwwwwwwwwggg",
-"w==wwwwwwwwwwwgggggggg",
-"w====wwwwwwwwwwwwggggg",
-"wg========gggggggggggg",
-"wg========gggggggggggg",
-"wg=========ggggg====gg",
-"wgg=========gggg====gg",
-"wgg=========gggggw==wg",
-"wgg=========ggggwwwwwg",
-"wgg=========ggwwwwwwgg",
-"wgg=========ggggwwwwwg",
-"wgg=========gggw;wwwgg",
+"wwgwwggwwwwwwwwgww===g",
+"wwwwwwwwwwwwwwwww;w==g",
+";wwwwwwwwgwwggwwwwwggg",
+"ww=;;;wwwwgggggwgggggg",
+"w=;;;;wwggggggwwwggwwg",
+"ww=;;==w==g=gggggggggg",
+"wg===;====ggg=gggggggg",
+"===========ggggp====gg",
+"==g==========ggg====gg",
+"wwgg===g====gggggw==wg",
+"wwwgggg=====ggggwwwwwg",
+"wgggg=gg==g=ggwwwwwwgg",
+"gggg====ggg=ggggwwwwwg",
+"wgg====gg===gggw;wwwgg",
 "wgg=========ggg;gggggg"
 ];
 
@@ -51,10 +51,11 @@ var mapinterpret = {
 	'#006' : 'tallgrass',
 	'w' : 'weeds',
 	'#008' : 'tallweeds',
-	'#009' : 'mushroom-1',
+	'#003' : 'mushroom-1',
 	'#00a' : 'mushroom-2',
 	'#00b' : 'mushroom-3',
-	';' : 'whiteflowers'
+	';' : 'whiteflowers',
+	'p' : 'purpleflowers'
 };
 
 //Find tile on tileset
@@ -67,7 +68,8 @@ var mapXscale = {
 	'grass-lush2' : 5,
 	'tallgrass' : 6,
 	'weeds' : 7,
-	'whiteflowers' : 0
+	'whiteflowers' : 0,
+	'purpleflowers' : 1
 };
 var mapYscale = {
 	'air' : 0,
@@ -78,7 +80,8 @@ var mapYscale = {
 	'grass-lush2' : 0,
 	'tallgrass' : 0,
 	'weeds' : 0,
-	'whiteflowers' : 1
+	'whiteflowers' : 1,
+	'purpleflowers': 1
 }
 
 //Sample map render
